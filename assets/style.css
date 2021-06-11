@@ -24,7 +24,7 @@ body {
     box-sizing: border-box;
     height: 10rem;
     width: 10rem;
-    border: 1rem solid white;
+    border: 1px solid white;
 }
 
 .ttt__game .game__bottom-right {
