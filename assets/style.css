@@ -15,6 +15,9 @@
 }
 
 .ttt__game > div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     height: 10rem;
     width: 10rem;
     border: 1px solid white;
