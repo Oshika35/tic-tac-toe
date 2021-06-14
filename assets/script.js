@@ -23,8 +23,8 @@ const gameBoard = (() => {
                 playerTwo.playerAction(square)
                 break;
         }
-        trackGame.trackConditions(gameArray);
         trackGame.trackTurn(turn);
+        trackGame.trackConditions(gameArray);
     }
 
     const setEventListeners = () => {
@@ -34,6 +34,9 @@ const gameBoard = (() => {
     const reset = () => {
         const button = document.querySelector(".reset__button");
         button.addEventListener('click', () => {
+            const xTurn = document.querySelector(".turn__x");
+            const oTurn = document.querySelector(".turn__o");
+
             gameArray = [
                 [],
                 [],
@@ -44,7 +47,9 @@ const gameBoard = (() => {
                 square.removeAttribute("style");
             });
             turn = "x";
-        })
+            oTurn.style.color = "rgba(255, 255, 255, 0.3)"
+            xTurn.style.color = "rgba(255, 255, 255)"
+        });
     }
 
     const pushSymbolToArray = (symbol, position) => {
@@ -93,19 +98,20 @@ const gameBoard = (() => {
 })();
 
 const trackGame = (() => {
+    const xTurn = document.querySelector(".turn__x");
+    const oTurn = document.querySelector(".turn__o");
+
     const _setTurn = (turn) => {
-        const x = document.querySelector(".turn__x");
-        const o = document.querySelector(".turn__o");
         switch(turn) {
             case "x":
                 gameBoard.changeTurn("o");
-                x.style.color = "rgba(255, 255, 255, 0.3)"
-                o.style.color = "rgba(255, 255, 255)"
+                xTurn.style.color = "rgba(255, 255, 255, 0.3)"
+                oTurn.style.color = "rgba(255, 255, 255)"
                 break;
             case "o":
                 gameBoard.changeTurn("x");
-                o.style.color = "rgba(255, 255, 255, 0.3)"
-                x.style.color = "rgba(255, 255, 255)"
+                oTurn.style.color = "rgba(255, 255, 255, 0.3)"
+                xTurn.style.color = "rgba(255, 255, 255)"
                 break;
         }
     }
@@ -132,6 +138,8 @@ const trackGame = (() => {
         if (crossWin || circleWin) {
             const squares = document.querySelectorAll('.ttt__game > div');
             squares.forEach(square => square.style.pointerEvents = "none");
+            oTurn.style.color = "rgba(255, 255, 255, 0.3)";
+            xTurn.style.color = "rgba(255, 255, 255, 0.3)";
             if (crossWin) {
                 console.log("Cross team won");
             }
