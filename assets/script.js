@@ -8,6 +8,8 @@ const gameBoard = (() => {
 
     let turn = "x";
 
+    const squares = document.querySelectorAll('.ttt__game > div');
+
     const changeTurn = (value) => {
         turn = value;
     }
@@ -27,8 +29,23 @@ const gameBoard = (() => {
     }
 
     const setEventListeners = () => {
-        const squares = document.querySelectorAll('.ttt__game > div');
         squares.forEach(square => square.addEventListener('click', _listenerFunction.bind(null, square)));
+    }
+
+    const reset = () => {
+        const button = document.querySelector(".reset__button");
+        button.addEventListener('click', () => {
+            gameArray = [
+                [],
+                [],
+                []
+            ];
+            squares.forEach(square => {
+                square.textContent = '';
+                square.removeAttribute("style");
+            });
+            turn = "x";
+        })
     }
 
     const pushSymbolToArray = (symbol, position) => {
@@ -73,7 +90,7 @@ const gameBoard = (() => {
                 break;
         }
     }
-    return { setEventListeners, pushSymbolToArray, changeTurn };
+    return { setEventListeners, pushSymbolToArray, changeTurn, reset };
 })();
 
 const trackGame = (() => {
@@ -105,6 +122,7 @@ const trackGame = (() => {
         const crossWin = _winPattern(gameArray, x);
         const circleWin = _winPattern(gameArray, o);
         console.log(crossWin);
+        console.log(circleWin);
 
         if (crossWin || circleWin) {
             const squares = document.querySelectorAll('.ttt__game > div');
@@ -143,3 +161,4 @@ const playerTwo = Player('o');
 
 
 gameBoard.setEventListeners();
+gameBoard.reset();
