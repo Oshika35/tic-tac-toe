@@ -20,6 +20,7 @@
   display: flex;
   justify-content: space-around;
   width: 100%;
+  font-family: "Roboto", sans-serif;
   font-size: 5rem;
   color: white;
 }
