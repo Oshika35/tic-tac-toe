@@ -6,28 +6,28 @@ const gameBoard = (() => {
         []
     ];
 
-    const setEventListeners = (status) => {
-        const squares = document.querySelectorAll('.ttt__game > div');
-        squares.forEach(square => square.addEventListener('click', () => {
-            // if () {
-            playerOne.playerAction(square);
-            // }
-            // else if () {
-            //      playerTwo.playerAction(square)
-            // }
-            trackGame.trackConditions(gameArray);
-        }));
-        if (status === 0) {
-            squares.forEach(square => square.removeEventListener('click', () => {
-            // if () {
-            playerOne.playerAction(square);
-            // }
-            // else if () {
-            //      playerTwo.playerAction(square)
-            // }
-            trackGame.trackConditions(gameArray);
-            }));
+    let turn = "x";
+
+    const changeTurn = (value) => {
+        turn = value;
+    }
+
+    function _listenerFunction() { // changer la fonction en variable !! (voir discord top)
+        switch(turn) {
+            case "x":
+                playerOne.playerAction(this);
+                break;
+            case "y":
+                playerTwo.playerAction(this)
+                break;
         }
+        trackGame.trackConditions(gameArray);
+        trackGame.trackTurn(turn);
+    }
+
+    const setEventListeners = () => {
+        const squares = document.querySelectorAll('.ttt__game > div');
+        squares.forEach(square => square.addEventListener('click', _listenerFunction));
     }
 
     const pushSymbolToArray = (symbol, position) => {
@@ -41,7 +41,6 @@ const gameBoard = (() => {
         const bottomLeft = gameBoard.querySelector('div:nth-child(7)');
         const bottomMiddle = gameBoard.querySelector('div:nth-child(8)');
         const bottomRight = gameBoard.querySelector('div:nth-child(9)');
-
 
         switch (position) {
             case topLeft:
@@ -74,45 +73,61 @@ const gameBoard = (() => {
         }
         console.log(gameArray);
     }
-    return { setEventListeners, pushSymbolToArray };
+    return { setEventListeners, pushSymbolToArray, changeTurn };
 })();
 
 const trackGame = (() => {
+    const _setTurn = (turn) => {
+        switch(turn) {
+            case "x":
+                gameBoard.changeTurn("y");
+                break;
+            case "y":
+                gameBoard.changeTurn("x");
+                break;
+        }
+    }
+
     const _setWinConditions = (gameArray) => {
         const x = 'x';
         const y = 'o';
         const symbol = x || y;
 
         const horizontalWin =
-            gameArray[0][0] && gameArray[0][1] && gameArray[0][2] === symbol ||
-            gameArray[1][0] && gameArray[1][1] && gameArray[1][2] === symbol ||
-            gameArray[2][0] && gameArray[2][1] && gameArray[2][2] === symbol;
+            gameArray[0][0] === symbol && gameArray[0][1] === symbol && gameArray[0][2] === symbol ||
+            gameArray[1][0] === symbol && gameArray[1][1] === symbol && gameArray[1][2] === symbol ||
+            gameArray[2][0] === symbol && gameArray[2][1] === symbol && gameArray[2][2] === symbol;
 
         const verticalWin =
-            gameArray[0][0] && gameArray[1][0] && gameArray[2][0] === symbol ||
-            gameArray[0][1] && gameArray[1][1] && gameArray[2][1] === symbol ||
-            gameArray[0][2] && gameArray[1][2] && gameArray[2][2] === symbol;
+            gameArray[0][0] === symbol && gameArray[1][0] === symbol && gameArray[2][0] === symbol ||
+            gameArray[0][1] === symbol && gameArray[1][1] === symbol && gameArray[2][1] === symbol ||
+            gameArray[0][2] === symbol && gameArray[1][2] === symbol && gameArray[2][2] === symbol;
 
         const crosswiseWin =
-            gameArray[0][0] && gameArray[1][1] && gameArray[2][2] === symbol ||
-            gameArray[0][2] && gameArray[1][1] && gameArray[2][0] === symbol;
+            gameArray[0][0] === symbol && gameArray[1][1] === symbol && gameArray[2][2] === symbol ||
+            gameArray[0][2] === symbol && gameArray[1][1] === symbol && gameArray[2][0] === symbol;
 
         if (horizontalWin || verticalWin || crosswiseWin) {
-            console.log("you won");
-            gameBoard.setEventListeners(0);
+            const squares = document.querySelectorAll('.ttt__game > div');
+            squares.forEach(square => square.style.pointerEvents = "none");
         }
+    }
+
+    const trackTurn = (turn) => {
+        _setTurn(turn);
     }
 
     const trackConditions = (gameArray) => {
         _setWinConditions(gameArray);
     }
-    return { trackConditions };
+    return { trackTurn, trackConditions };
 })();
 
 const Player = (symbol) => {
     const playerAction = (square) => {
         square.textContent = symbol;
         gameBoard.pushSymbolToArray(symbol, square);
+        square.style.pointerEvents = "none";
     }
     return { playerAction };
 }
