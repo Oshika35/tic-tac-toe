@@ -23,6 +23,7 @@
   height: 10rem;
   width: 10rem;
   border: 1px solid white;
+  user-select: none;
 }
 
 .ttt__game .game__bottom-right {
