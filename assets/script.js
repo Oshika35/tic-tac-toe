@@ -115,6 +115,12 @@ const trackGame = (() => {
         if (crossWin || circleWin) {
             const squares = document.querySelectorAll('.ttt__game > div');
             squares.forEach(square => square.style.pointerEvents = "none");
+            if (crossWin) {
+                alert("Cross team won");
+            }
+            else if (circleWin) {
+                alert("Circle team won");
+            }
         }
     }
 
