@@ -15,7 +15,6 @@ const gameBoard = (() => {
     }
 
     const _listenerFunction = (square) => {
-        console.log(square);
         switch(turn) {
             case "x":
                 playerOne.playerAction(square);
@@ -95,12 +94,18 @@ const gameBoard = (() => {
 
 const trackGame = (() => {
     const _setTurn = (turn) => {
+        const x = document.querySelector(".turn__x");
+        const o = document.querySelector(".turn__o");
         switch(turn) {
             case "x":
                 gameBoard.changeTurn("o");
+                x.style.color = "rgba(255, 255, 255, 0.3)"
+                o.style.color = "rgba(255, 255, 255)"
                 break;
             case "o":
                 gameBoard.changeTurn("x");
+                o.style.color = "rgba(255, 255, 255, 0.3)"
+                x.style.color = "rgba(255, 255, 255)"
                 break;
         }
     }
@@ -121,8 +126,8 @@ const trackGame = (() => {
         const o = 'o';
         const crossWin = _winPattern(gameArray, x);
         const circleWin = _winPattern(gameArray, o);
-        console.log(crossWin);
-        console.log(circleWin);
+        console.log(crossWin, "cross");
+        console.log(circleWin, "circle");
 
         if (crossWin || circleWin) {
             const squares = document.querySelectorAll('.ttt__game > div');

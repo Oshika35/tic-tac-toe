@@ -10,10 +10,22 @@
 .ttt__game {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  margin-bottom: 3rem;
+  margin: 3rem 0 3rem 0;
   font-family: "Roboto", sans-serif;
   font-size: 6rem;
   color: white;
+}
+
+.ttt__turn {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  font-size: 5rem;
+  color: white;
+}
+
+.ttt__turn .turn__o {
+  color: rgba(255, 255, 255, 0.3);
 }
 
 .ttt__game > div {
