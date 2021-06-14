@@ -91,23 +91,28 @@ const trackGame = (() => {
     const _setWinConditions = (gameArray) => {
         const x = 'x';
         const y = 'o';
-        const symbol = x || y;
 
-        const horizontalWin =
-            gameArray[0][0] === symbol && gameArray[0][1] === symbol && gameArray[0][2] === symbol ||
-            gameArray[1][0] === symbol && gameArray[1][1] === symbol && gameArray[1][2] === symbol ||
-            gameArray[2][0] === symbol && gameArray[2][1] === symbol && gameArray[2][2] === symbol;
+        const crossWin =
+            gameArray[0][0] === x && gameArray[0][1] === x && gameArray[0][2] === x ||
+            gameArray[1][0] === x && gameArray[1][1] === x && gameArray[1][2] === x ||
+            gameArray[2][0] === x && gameArray[2][1] === x && gameArray[2][2] === x ||
+            gameArray[0][0] === x && gameArray[1][0] === x && gameArray[2][0] === x ||
+            gameArray[0][1] === x && gameArray[1][1] === x && gameArray[2][1] === x ||
+            gameArray[0][2] === x && gameArray[1][2] === x && gameArray[2][2] === x ||
+            gameArray[0][0] === x && gameArray[1][1] === x && gameArray[2][2] === x ||
+            gameArray[0][2] === x && gameArray[1][1] === x && gameArray[2][0] === x;
 
-        const verticalWin =
-            gameArray[0][0] === symbol && gameArray[1][0] === symbol && gameArray[2][0] === symbol ||
-            gameArray[0][1] === symbol && gameArray[1][1] === symbol && gameArray[2][1] === symbol ||
-            gameArray[0][2] === symbol && gameArray[1][2] === symbol && gameArray[2][2] === symbol;
+        const circleWin =
+            gameArray[0][0] === y && gameArray[0][1] === y && gameArray[0][2] === y ||
+            gameArray[1][0] === y && gameArray[1][1] === y && gameArray[1][2] === y ||
+            gameArray[2][0] === y && gameArray[2][1] === y && gameArray[2][2] === y ||
+            gameArray[0][0] === y && gameArray[1][0] === y && gameArray[2][0] === y ||
+            gameArray[0][1] === y && gameArray[1][1] === y && gameArray[2][1] === y ||
+            gameArray[0][2] === y && gameArray[1][2] === y && gameArray[2][2] === y ||
+            gameArray[0][0] === y && gameArray[1][1] === y && gameArray[2][2] === y ||
+            gameArray[0][2] === y && gameArray[1][1] === y && gameArray[2][0] === y;
 
-        const crosswiseWin =
-            gameArray[0][0] === symbol && gameArray[1][1] === symbol && gameArray[2][2] === symbol ||
-            gameArray[0][2] === symbol && gameArray[1][1] === symbol && gameArray[2][0] === symbol;
-
-        if (horizontalWin || verticalWin || crosswiseWin) {
+        if (crossWin || circleWin) {
             const squares = document.querySelectorAll('.ttt__game > div');
             squares.forEach(square => square.style.pointerEvents = "none");
         }
