@@ -12,7 +12,8 @@ const gameBoard = (() => {
         turn = value;
     }
 
-    function _listenerFunction() { // changer la fonction en variable !! (voir discord top)
+    function _listenerFunction() {
+        console.log(this);
         switch(turn) {
             case "x":
                 playerOne.playerAction(this);
