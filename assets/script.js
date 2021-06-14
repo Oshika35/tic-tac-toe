@@ -12,14 +12,14 @@ const gameBoard = (() => {
         turn = value;
     }
 
-    function _listenerFunction() {
-        console.log(this);
+    const _listenerFunction = (square) => {
+        console.log(square);
         switch(turn) {
             case "x":
-                playerOne.playerAction(this);
+                playerOne.playerAction(square);
                 break;
-            case "y":
-                playerTwo.playerAction(this)
+            case "o":
+                playerTwo.playerAction(square)
                 break;
         }
         trackGame.trackConditions(gameArray);
@@ -28,7 +28,7 @@ const gameBoard = (() => {
 
     const setEventListeners = () => {
         const squares = document.querySelectorAll('.ttt__game > div');
-        squares.forEach(square => square.addEventListener('click', _listenerFunction));
+        squares.forEach(square => square.addEventListener('click', _listenerFunction.bind(null, square)));
     }
 
     const pushSymbolToArray = (symbol, position) => {
@@ -72,7 +72,6 @@ const gameBoard = (() => {
                 gameArray[2][2] = symbol;
                 break;
         }
-        console.log(gameArray);
     }
     return { setEventListeners, pushSymbolToArray, changeTurn };
 })();
@@ -81,46 +80,40 @@ const trackGame = (() => {
     const _setTurn = (turn) => {
         switch(turn) {
             case "x":
-                gameBoard.changeTurn("y");
+                gameBoard.changeTurn("o");
                 break;
-            case "y":
+            case "o":
                 gameBoard.changeTurn("x");
                 break;
         }
     }
 
+    const _winPattern = (gameArray, symbol) => {
+        return gameArray[0][0] === symbol && gameArray[0][1] === symbol && gameArray[0][2] === symbol ||
+               gameArray[1][0] === symbol && gameArray[1][1] === symbol && gameArray[1][2] === symbol ||
+               gameArray[2][0] === symbol && gameArray[2][1] === symbol && gameArray[2][2] === symbol ||
+               gameArray[0][0] === symbol && gameArray[1][0] === symbol && gameArray[2][0] === symbol ||
+               gameArray[0][1] === symbol && gameArray[1][1] === symbol && gameArray[2][1] === symbol ||
+               gameArray[0][2] === symbol && gameArray[1][2] === symbol && gameArray[2][2] === symbol ||
+               gameArray[0][0] === symbol && gameArray[1][1] === symbol && gameArray[2][2] === symbol ||
+               gameArray[0][2] === symbol && gameArray[1][1] === symbol && gameArray[2][0] === symbol;
+    }
+
     const _setWinConditions = (gameArray) => {
         const x = 'x';
-        const y = 'o';
-
-        const crossWin =
-            gameArray[0][0] === x && gameArray[0][1] === x && gameArray[0][2] === x ||
-            gameArray[1][0] === x && gameArray[1][1] === x && gameArray[1][2] === x ||
-            gameArray[2][0] === x && gameArray[2][1] === x && gameArray[2][2] === x ||
-            gameArray[0][0] === x && gameArray[1][0] === x && gameArray[2][0] === x ||
-            gameArray[0][1] === x && gameArray[1][1] === x && gameArray[2][1] === x ||
-            gameArray[0][2] === x && gameArray[1][2] === x && gameArray[2][2] === x ||
-            gameArray[0][0] === x && gameArray[1][1] === x && gameArray[2][2] === x ||
-            gameArray[0][2] === x && gameArray[1][1] === x && gameArray[2][0] === x;
-
-        const circleWin =
-            gameArray[0][0] === y && gameArray[0][1] === y && gameArray[0][2] === y ||
-            gameArray[1][0] === y && gameArray[1][1] === y && gameArray[1][2] === y ||
-            gameArray[2][0] === y && gameArray[2][1] === y && gameArray[2][2] === y ||
-            gameArray[0][0] === y && gameArray[1][0] === y && gameArray[2][0] === y ||
-            gameArray[0][1] === y && gameArray[1][1] === y && gameArray[2][1] === y ||
-            gameArray[0][2] === y && gameArray[1][2] === y && gameArray[2][2] === y ||
-            gameArray[0][0] === y && gameArray[1][1] === y && gameArray[2][2] === y ||
-            gameArray[0][2] === y && gameArray[1][1] === y && gameArray[2][0] === y;
+        const o = 'o';
+        const crossWin = _winPattern(gameArray, x);
+        const circleWin = _winPattern(gameArray, o);
+        console.log(crossWin);
 
         if (crossWin || circleWin) {
             const squares = document.querySelectorAll('.ttt__game > div');
             squares.forEach(square => square.style.pointerEvents = "none");
             if (crossWin) {
-                alert("Cross team won");
+                console.log("Cross team won");
             }
             else if (circleWin) {
-                alert("Circle team won");
+                console.log("Circle team won");
             }
         }
     }
