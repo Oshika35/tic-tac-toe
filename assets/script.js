@@ -39,20 +39,20 @@ const gameBoard = (() => {
         const oTurn = document.querySelector(".turn__o");
 
         turn = value;
-        switch(value) {
+        switch (value) {
             case "x":
-                oTurn.style.color = "rgba(255, 255, 255, 0.3)";
                 xTurn.style.color = "rgba(255, 255, 255)";
+                oTurn.style.color = "rgba(255, 255, 255, 0.3)";
                 break;
             case "o":
-                oTurn.style.color = "rgba(255, 255, 255)";
                 xTurn.style.color = "rgba(255, 255, 255, 0.3)";
+                oTurn.style.color = "rgba(255, 255, 255)";
                 break;
         }
     }
 
     const _listenerFunction = (square) => {
-        switch(turn) {
+        switch (turn) {
             case "x":
                 playerOne.playerAction(square);
                 break;
@@ -71,8 +71,8 @@ const gameBoard = (() => {
     }
 
     const reset = () => {
-        const button = document.querySelector(".reset__button");
-        button.addEventListener('click', () => {
+        const buttons = document.querySelectorAll(".reset__button");
+        buttons.forEach(button => button.addEventListener('click', () => {
             gameArray = [
                 [],
                 [],
@@ -84,7 +84,8 @@ const gameBoard = (() => {
             });
             turn = "x";
             teamSelection.reset();
-        });
+            trackGame.reset();
+        }));
     }
 
     const pushSymbolToArray = (symbol, position) => {
@@ -135,9 +136,10 @@ const gameBoard = (() => {
 const trackGame = (() => {
     const xTurn = document.querySelector(".turn__x");
     const oTurn = document.querySelector(".turn__o");
+    const modal = document.querySelector(".modal__win");
 
     const _setTurn = (turn) => {
-        switch(turn) {
+        switch (turn) {
             case "x":
                 gameBoard.changeTurn("o");
                 xTurn.style.color = "rgba(255, 255, 255, 0.3)"
@@ -145,21 +147,21 @@ const trackGame = (() => {
                 break;
             case "o":
                 gameBoard.changeTurn("x");
-                oTurn.style.color = "rgba(255, 255, 255, 0.3)"
                 xTurn.style.color = "rgba(255, 255, 255)"
+                oTurn.style.color = "rgba(255, 255, 255, 0.3)"
                 break;
         }
     }
 
     const _winPattern = (gameArray, symbol) => {
         return gameArray[0][0] === symbol && gameArray[0][1] === symbol && gameArray[0][2] === symbol ||
-               gameArray[1][0] === symbol && gameArray[1][1] === symbol && gameArray[1][2] === symbol ||
-               gameArray[2][0] === symbol && gameArray[2][1] === symbol && gameArray[2][2] === symbol ||
-               gameArray[0][0] === symbol && gameArray[1][0] === symbol && gameArray[2][0] === symbol ||
-               gameArray[0][1] === symbol && gameArray[1][1] === symbol && gameArray[2][1] === symbol ||
-               gameArray[0][2] === symbol && gameArray[1][2] === symbol && gameArray[2][2] === symbol ||
-               gameArray[0][0] === symbol && gameArray[1][1] === symbol && gameArray[2][2] === symbol ||
-               gameArray[0][2] === symbol && gameArray[1][1] === symbol && gameArray[2][0] === symbol;
+            gameArray[1][0] === symbol && gameArray[1][1] === symbol && gameArray[1][2] === symbol ||
+            gameArray[2][0] === symbol && gameArray[2][1] === symbol && gameArray[2][2] === symbol ||
+            gameArray[0][0] === symbol && gameArray[1][0] === symbol && gameArray[2][0] === symbol ||
+            gameArray[0][1] === symbol && gameArray[1][1] === symbol && gameArray[2][1] === symbol ||
+            gameArray[0][2] === symbol && gameArray[1][2] === symbol && gameArray[2][2] === symbol ||
+            gameArray[0][0] === symbol && gameArray[1][1] === symbol && gameArray[2][2] === symbol ||
+            gameArray[0][2] === symbol && gameArray[1][1] === symbol && gameArray[2][0] === symbol;
     }
 
     const _setWinConditions = (gameArray) => {
@@ -167,21 +169,25 @@ const trackGame = (() => {
         const o = 'o';
         const crossWin = _winPattern(gameArray, x);
         const circleWin = _winPattern(gameArray, o);
-        console.log(crossWin, "cross");
-        console.log(circleWin, "circle");
 
         if (crossWin || circleWin) {
+            const message = modal.querySelector(".container__message");
             const squares = document.querySelectorAll('.ttt__game > div');
             squares.forEach(square => square.style.pointerEvents = "none");
             oTurn.style.color = "rgba(255, 255, 255, 0.3)";
             xTurn.style.color = "rgba(255, 255, 255, 0.3)";
+            modal.style.display = "flex";
             if (crossWin) {
-                console.log("Cross team won");
+                message.textContent = "X WON!";
             }
             else if (circleWin) {
-                console.log("Circle team won");
+                message.textContent = "O WON!";
             }
         }
+    }
+
+    const reset = () => {
+        modal.style.display = "none";
     }
 
     const trackTurn = (turn) => {
@@ -191,7 +197,7 @@ const trackGame = (() => {
     const trackConditions = (gameArray) => {
         _setWinConditions(gameArray);
     }
-    return { trackTurn, trackConditions };
+    return { trackTurn, trackConditions, reset };
 })();
 
 const Player = (symbol) => {

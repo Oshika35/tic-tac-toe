@@ -138,3 +138,29 @@
   font-family: "Roboto", sans-serif;
   margin: 1rem;
 }
+
+.modal__win {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #181818;
+}
+
+.win__container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.container__message {
+  font-family: "Roboto", sans-serif;
+  font-size: 5rem;
+  color: #FAFAFA;
+  margin-bottom: 5rem;
+}
