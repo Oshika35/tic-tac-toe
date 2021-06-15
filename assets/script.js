@@ -1,6 +1,7 @@
 const teamSelection = (() => {
-    const selectTeam = (reset) => {
-        const modal = document.querySelector(".container__selection")
+    const modal = document.querySelector(".container__selection");
+
+    const selectTeam = () => {
         const teamX = modal.querySelector(".team__x");
         const teamO = modal.querySelector(".team__o");
 
@@ -12,13 +13,13 @@ const teamSelection = (() => {
             modal.classList.add("hidden");
             gameBoard.changeTurn("o");
         });
-
-        if (reset === 0) {
-            modal.classList.remove("hidden");
-        }
     }
 
-    return { selectTeam };
+    const reset = () => {
+        modal.classList.remove("hidden");
+    }
+
+    return { selectTeam, reset };
 })();
 
 const gameBoard = (() => {
@@ -65,6 +66,7 @@ const gameBoard = (() => {
 
     const setEventListeners = () => {
         teamSelection.selectTeam();
+        gameBoard.reset();
         squares.forEach(square => square.addEventListener('click', _listenerFunction.bind(null, square)));
     }
 
@@ -81,7 +83,7 @@ const gameBoard = (() => {
                 square.removeAttribute("style");
             });
             turn = "x";
-            teamSelection.selectTeam(0);
+            teamSelection.reset();
         });
     }
 
@@ -205,4 +207,3 @@ const playerOne = Player('x');
 const playerTwo = Player('o');
 
 gameBoard.setEventListeners();
-gameBoard.reset();
