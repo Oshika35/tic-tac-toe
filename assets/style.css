@@ -25,10 +25,6 @@
   color: white;
 }
 
-.ttt__turn .turn__o {
-  color: rgba(255, 255, 255, 0.3);
-}
-
 .ttt__game > div {
   display: flex;
   justify-content: center;
@@ -75,7 +71,9 @@
   border-top: none;
 }
 
-.reset__button {
+.reset__button,
+.team__x,
+.team__o {
   display: inline-block;
   border: none;
   padding: 1rem 2rem;
@@ -94,15 +92,49 @@
 }
 
 .reset__button:hover,
-.reset__button:focus {
+.reset__button:focus,
+.team__x:hover,
+.team__x:focus,
+.team__o:hover,
+.team__o:focus {
   background: #0053ba;
 }
 
-.reset__button:focus {
+.reset__button:focus,
+.team__x:focus,
+.team__o:focus {
   outline: 1px solid #fff;
   outline-offset: -4px;
 }
 
-.reset__button:active {
+.reset__button:active,
+.team__x:active,
+.team__o:active {
   transform: scale(0.99);
+}
+
+.container__selection {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #181818;
+}
+
+.container__selection.hidden {
+  display: none;
+}
+
+.selection__team {
+  display: flex;
+  flex-direction: column;
+}
+
+.selection__team > button {
+  font-family: "Roboto", sans-serif;
+  margin: 1rem;
 }

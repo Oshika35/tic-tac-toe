@@ -1,3 +1,26 @@
+const teamSelection = (() => {
+    const selectTeam = (reset) => {
+        const modal = document.querySelector(".container__selection")
+        const teamX = modal.querySelector(".team__x");
+        const teamO = modal.querySelector(".team__o");
+
+        teamX.addEventListener('click', () => {
+            modal.classList.add("hidden");
+            gameBoard.changeTurn("x");
+        });
+        teamO.addEventListener('click', () => {
+            modal.classList.add("hidden");
+            gameBoard.changeTurn("o");
+        });
+
+        if (reset === 0) {
+            modal.classList.remove("hidden");
+        }
+    }
+
+    return { selectTeam };
+})();
+
 const gameBoard = (() => {
 
     let gameArray = [
@@ -11,7 +34,20 @@ const gameBoard = (() => {
     const squares = document.querySelectorAll('.ttt__game > div');
 
     const changeTurn = (value) => {
+        const xTurn = document.querySelector(".turn__x");
+        const oTurn = document.querySelector(".turn__o");
+
         turn = value;
+        switch(value) {
+            case "x":
+                oTurn.style.color = "rgba(255, 255, 255, 0.3)";
+                xTurn.style.color = "rgba(255, 255, 255)";
+                break;
+            case "o":
+                oTurn.style.color = "rgba(255, 255, 255)";
+                xTurn.style.color = "rgba(255, 255, 255, 0.3)";
+                break;
+        }
     }
 
     const _listenerFunction = (square) => {
@@ -28,15 +64,13 @@ const gameBoard = (() => {
     }
 
     const setEventListeners = () => {
+        teamSelection.selectTeam();
         squares.forEach(square => square.addEventListener('click', _listenerFunction.bind(null, square)));
     }
 
     const reset = () => {
         const button = document.querySelector(".reset__button");
         button.addEventListener('click', () => {
-            const xTurn = document.querySelector(".turn__x");
-            const oTurn = document.querySelector(".turn__o");
-
             gameArray = [
                 [],
                 [],
@@ -47,8 +81,7 @@ const gameBoard = (() => {
                 square.removeAttribute("style");
             });
             turn = "x";
-            oTurn.style.color = "rgba(255, 255, 255, 0.3)"
-            xTurn.style.color = "rgba(255, 255, 255)"
+            teamSelection.selectTeam(0);
         });
     }
 
@@ -170,8 +203,6 @@ const Player = (symbol) => {
 
 const playerOne = Player('x');
 const playerTwo = Player('o');
-
-
 
 gameBoard.setEventListeners();
 gameBoard.reset();
