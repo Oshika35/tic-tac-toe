@@ -137,6 +137,7 @@ const trackGame = (() => {
     const xTurn = document.querySelector(".turn__x");
     const oTurn = document.querySelector(".turn__o");
     const modal = document.querySelector(".modal__win");
+    const message = modal.querySelector(".container__message");
 
     const _setTurn = (turn) => {
         switch (turn) {
@@ -171,7 +172,6 @@ const trackGame = (() => {
         const circleWin = _winPattern(gameArray, o);
 
         if (crossWin || circleWin) {
-            const message = modal.querySelector(".container__message");
             const squares = document.querySelectorAll('.ttt__game > div');
             squares.forEach(square => square.style.pointerEvents = "none");
             oTurn.style.color = "rgba(255, 255, 255, 0.3)";
@@ -186,6 +186,18 @@ const trackGame = (() => {
         }
     }
 
+    const _setTieConditions = (gameArray) => {
+        const tie =
+        gameArray[0].length === 3 &&
+        gameArray[1].length === 3 &&
+        gameArray[2].length === 3;
+
+        if (tie) {
+            modal.style.display = "flex";
+            message.textContent = "TIE!";
+        }
+    }
+
     const reset = () => {
         modal.style.display = "none";
     }
@@ -196,7 +208,9 @@ const trackGame = (() => {
 
     const trackConditions = (gameArray) => {
         _setWinConditions(gameArray);
+        _setTieConditions(gameArray);
     }
+
     return { trackTurn, trackConditions, reset };
 })();
 
