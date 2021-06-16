@@ -188,7 +188,6 @@ const trackGame = (() => {
 
     const _setTieConditions = (gameArray) => {
         const tie = gameArray.every(array => array.every(index => index === "x" || index === "o"));
-        console.log(gameArray);
         if (tie) {
             modal.style.display = "flex";
             message.textContent = "TIE!";
