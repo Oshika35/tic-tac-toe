@@ -25,9 +25,9 @@ const teamSelection = (() => {
 const gameBoard = (() => {
 
     let gameArray = [
-        [],
-        [],
-        []
+        ['', '', ''],
+        ['', '', ''],
+        ['', '', '']
     ];
 
     let turn = "x";
@@ -74,9 +74,9 @@ const gameBoard = (() => {
         const buttons = document.querySelectorAll(".reset__button");
         buttons.forEach(button => button.addEventListener('click', () => {
             gameArray = [
-                [],
-                [],
-                []
+                ['', '', ''],
+                ['', '', ''],
+                ['', '', '']
             ];
             squares.forEach(square => {
                 square.textContent = '';
@@ -187,11 +187,8 @@ const trackGame = (() => {
     }
 
     const _setTieConditions = (gameArray) => {
-        const tie =
-        gameArray[0].length === 3 &&
-        gameArray[1].length === 3 &&
-        gameArray[2].length === 3;
-
+        const tie = gameArray.every(array => array.every(index => index === "x" || index === "o"));
+        console.log(gameArray);
         if (tie) {
             modal.style.display = "flex";
             message.textContent = "TIE!";
@@ -207,8 +204,8 @@ const trackGame = (() => {
     }
 
     const trackConditions = (gameArray) => {
-        _setWinConditions(gameArray);
         _setTieConditions(gameArray);
+        _setWinConditions(gameArray);
     }
 
     return { trackTurn, trackConditions, reset };
